@@ -33,24 +33,30 @@ class MovieController {
              */
             res.status(201).json(movie)
         } catch (err) {
-            /**
-             * Ketika action gagal, pastikan dulu errornya karena kesalahan request
-             * atau kesalahan server dan kirim response yang sesuai.
-             *
-             * Dalam kasus ini, kita check terlebih dahulu apakah terjadi
-             * error validasi.
-             *
-             * Kalau iya, kirim status 400 (Bad Request).
-             * Kalau tidak, kirim status code 500 (Internal Server Error)
-             */
-            if (err.name === 'SequelizeValidationError') {
-                // status code: 400
-            } else {
-                // status code: 500
-            }
+            next(err)
         }
     }
     /* ... */
 }
 /* ... */
+```
+
+## Error Handler
+
+```javascript
+// parameter error handler HARUS 4
+function errorHandler(err, req, res, next) {
+    /**
+     * Ketika action gagal, pastikan dulu errornya karena kesalahan request
+     * atau kesalahan server dan kirim response yang sesuai.
+     *
+     * Kalau kesalahan request, kirim status code 4xx (sesuaikan dengan errornya).
+     * Kalau tidak, kirim status code 500 (Internal Server Error)
+     */
+    if (err.name === 'SequelizeValidationError') {
+        // status code: 400
+    } else {
+        // status code: 500
+    }
+}
 ```
